@@ -14,16 +14,17 @@ class ViewController: UIViewController,UICollectionViewDataSource,UICollectionVi
 
     var musicList:[NSDictionary] = []
 
+    @IBOutlet weak var indicator: UIActivityIndicatorView!
     @IBOutlet weak var myCollectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         myCollectionView.isHidden = true
-        
+        indicator.startAnimating()
         queue.async {() -> Void in
             // 別スレッドでの処理
-            //itunesのAPIからmaroon5の情報を20件取得
-            var url = URL(string: "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/wa/wsSearch?term=maroon5&limit=20")
+            //itunesのAPIからtaylor swiftの情報を20件取得
+            var url = URL(string: "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/wa/wsSearch?term=taylor+swift&limit=20")
             var request = URLRequest(url:url!)
             var jsondata = (try! NSURLConnection.sendSynchronousRequest(request, returning: nil))
             let jsonDictionary = (try! JSONSerialization.jsonObject(with: jsondata, options: [])) as! NSDictionary
@@ -51,6 +52,8 @@ class ViewController: UIViewController,UICollectionViewDataSource,UICollectionVi
             
             self.myCollectionView.reloadData()
             self.myCollectionView.isHidden = false
+            
+            self.indicator.stopAnimating()
         }
 
 
